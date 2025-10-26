@@ -1,5 +1,5 @@
 
-:root {
+root {
 --primary-color: #e53935; /* Red - Energetic */
 --primary-hover: #c62828;
 --secondary-color: #1e88e5; /* Blue */
@@ -23,7 +23,7 @@ line-height: 1.6;
 min-height: 100vh;
 display: flex;
 flex-direction: column;
-} .
+} 
 container {
 width: 90%;
 max-width: 1000px;
@@ -253,3 +253,4 @@ flex-direction: column;
 gap: 10px;
 }
 }
+
