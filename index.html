@@ -4,43 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,
 initial-scale=1.0">
-<title>File Converter Tool - Convert to PDF</title>
+<title>Pro File Converter - Convert to PDF</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/al
+l.min.css">
 </head>
 <body>
 <header>
-<h1>Universal File Converter</h1>
-<p>Your simple tool to convert images and documents to
-PDF.</p>
-</header>
-<main>
-<div class="converter-box">
-<h2>Convert to PDF</h2>
-<div class="conversion-type">
-<label for="format-select">Select Your Conversion
-Type:</label>
-<select id="format-select">
-<option value="auto">Auto-Detect Format</option>
-<option value="png">PNG to PDF</option>
-<option value="jpg">JPG/JPEG to PDF</option>
-<option value="doc">DOC/DOCX to PDF</option>
-</select>
+<div class="container">
+<h1><i class="fas fa-file-pdf"></i> Pro PDF Converter</h1>
+<p>Convert your images and documents to PDF with
+professional quality.</p>
 </div>
-<div id="drop-area" class="upload-area">
-<input type="file" id="file-input" accept=".png, .jpg,
-.jpeg, .doc, .docx" multiple hidden><p>Drag & Drop your files here, or <span
-id="file-select-btn">Click to Browse</span></p>
-<small>Supported formats: .png, .jpg, .jpeg, .doc,
-.docx</small>
+</header>
+<main class="container">
+<div class="converter-module">
+<div class="tab-header">
+<button class="tab-btn active" data-format="pdf"><i
+class="fas fa-file-pdf"></i> To PDF</button>
+<button class="tab-btn" data-format="img"><i
+class="fas fa-image"></i> To Image (Coming Soon)</button>
+</div>
+<h2>Upload Files for Conversion</h2>
+<div id="drop-area" class="upload-area"><input type="file" id="file-input" accept=".png, .jpg,
+.jpeg, .doc, .docx" multiple hidden>
+<i class="fas fa-cloud-upload-alt"></i>
+<p>Drag & Drop up to 10 files here, or <span
+id="file-select-btn">Click to Select</span></p>
+<small>PNG, JPG, JPEG, DOC, DOCX to PDF.</small>
 </div>
 <div id="file-list" class="file-list">
 </div>
-<button id="convert-btn" disabled>Convert Now</button>
+<div class="action-bar">
+<button id="clear-btn" class="secondary-btn"
+disabled><i class="fas fa-trash"></i> Clear All</button>
+<button id="convert-btn" class="primary-btn"
+disabled><i class="fas fa-sync-alt"></i> Start Conversion</button>
+</div>
 <div id="status-message" class="status-message"></div>
 </div>
 </main>
 <footer>
-<p>© 2025 File Converter Tool</p>
+<div class="container">
+<p>© 2025 Pro File Converter. All Rights Reserved.</p>
+</div>
 </footer>
 <script src="script.js"></script>
 </body>
