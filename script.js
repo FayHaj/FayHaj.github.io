@@ -1,5 +1,5 @@
 
-// Global array to store selected files
+// Global array to store selected files (File objects)
 let selectedFiles = [];
 // Get DOM elements
 const dropArea = document.getElementById('drop-area');
@@ -7,70 +7,101 @@ const fileInput = document.getElementById('file-input');
 const fileSelectBtn = document.getElementById('file-select-btn');
 const fileListContainer = document.getElementById('file-list');
 const convertBtn = document.getElementById('convert-btn');
+const clearBtn = document.getElementById('clear-btn');
 const statusMessage = document.getElementById('status-message');
-const formatSelect = document.getElementById('format-select');
-// Helper function to check if a file is supported
+const MAX_FILES = 10;
+const API_ENDPOINT = 'api/convert.php'; // Change this to your actual
+backend endpoint (e.g., /api/convert)
+// --- Helper Functions ---
 function isFileSupported(file) {
-const supportedExtensions = ['.png', '.jpg', '.jpeg', '.doc',
-'.docx'];
-const fileName = file.name.toLowerCase();return supportedExtensions.some(ext => fileName.endsWith(ext));
+const supportedExtensions = [
+'.png', '.jpg', '.jpeg', '.doc', '.docx'
+];
+const fileName = file.name.toLowerCase();
+return supportedExtensions.some(ext => fileName.endsWith(ext));
+} f
+unction updateButtonsState() {
+const hasFiles = selectedFiles.length > 0;
+convertBtn.disabled = !hasFiles;
+clearBtn.disabled = !hasFiles;
+convertBtn.textContent = hasFiles ? `Convert
+${selectedFiles.length} File(s)` : 'Start Conversion';
+} f
+unction displayStatus(message, type = 'info') {
+statusMessage.textContent = message;
+statusMessage.className = `status-message ${type}`;
+statusMessage.style.display = 'block';
+} f
+unction getFileIconClass(fileName) {
+const ext = fileName.split('.').pop().toLowerCase();
+if (['png', 'jpg', 'jpeg'].includes(ext)) return 'fas fa-image';if (['doc', 'docx'].includes(ext)) return 'fas fa-file-word';
+return 'fas fa-file';
 } /
-/ Function to handle file additions (from drop or input)
+/ --- Main Logic Functions ---
 function handleFiles(files) {
-// Convert FileList to an array for easier manipulation
 const filesArray = Array.from(files);
-let newFilesAdded = false;
+let filesToAdd = 0;
 filesArray.forEach(file => {
-if (isFileSupported(file)) {
-// Check if the file is not already in the list (by name
-and size)
-const isDuplicate = selectedFiles.some(
-f => f.name === file.name && f.size === file.size
-);
+if (selectedFiles.length >= MAX_FILES) {
+return; // Stop adding if max limit reached
+}i
+f (isFileSupported(file)) {
+// Simple check to prevent immediate duplicates
+const isDuplicate = selectedFiles.some(f => f.name ===
+file.name && f.size === file.size);
 if (!isDuplicate) {
 selectedFiles.push(file);
-newFilesAdded = true;
+filesToAdd++;
 }
-} else {
-// Optional: Show an error for unsupported files
-console.warn(`File ${file.name} is not supported.`);
 }
 });
-if (newFilesAdded) {
+if (filesToAdd > 0) {
 renderFileList();
-}
-} /
-/ Function to display the list of selected files
-function renderFileList() {
-fileListContainer.innerHTML = ''; // Clear current list
-if (selectedFiles.length === 0) {
-fileListContainer.style.display = 'none';
-convertBtn.disabled = true;
-convertBtn.textContent = 'Convert Now';
+} i
+f (selectedFiles.length >= MAX_FILES) {
+displayStatus(`You have reached the maximum limit of
+${MAX_FILES} files.`, 'error');
+} else {
 statusMessage.style.display = 'none';
-return;
+}
 } f
-ileListContainer.style.display = 'block';
-convertBtn.disabled = false;
-selectedFiles.forEach((file, index) => {const fileItem = document.createElement('div');
+unction renderFileList() {
+fileListContainer.innerHTML = '';
+if (selectedFiles.length === 0) {
+fileListContainer.style.border = 'none';
+} else {
+fileListContainer.style.border = '1px solid
+var(--border-color)';
+} s
+electedFiles.forEach((file, index) => {const fileItem = document.createElement('div');
 fileItem.className = 'file-item';
+const iconClass = getFileIconClass(file.name);
 fileItem.innerHTML = `
+<i class="${iconClass}"></i>
 <span class="file-name">${file.name}</span>
-<span class="file-remove" data-index="${index}">×</span>
+<span class="file-remove" data-index="${index}"><i
+class="fas fa-times"></i></span>
 `;
 fileListContainer.appendChild(fileItem);
 });
-} /
-/ Event Listeners for File Selection
-fileSelectBtn.addEventListener('click', () => {
-fileInput.click(); // Trigger the hidden file input
-});
+updateButtonsState();
+} f
+unction clearAllFiles() {
+selectedFiles = [];
+renderFileList();
+displayStatus('All files cleared.', 'info');
+} 
+
+/
+/ --- Event Listeners ---
+// 1. File Input Trigger
+fileSelectBtn.addEventListener('click', () => fileInput.click());
+// 2. File Input Change
 fileInput.addEventListener('change', (e) => {
 handleFiles(e.target.files);
-e.target.value = ''; // Clear the input so the same file can be
-selected again
+e.target.value = ''; // Reset input
 });
-// Event Listeners for Drag and Drop
+// 3. Drag and Drop Handling
 ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
 dropArea.addEventListener(eventName, preventDefaults, false);
 });
@@ -81,50 +112,77 @@ dropArea.classList.add('highlight'), false);
 ['dragleave', 'drop'].forEach(eventName => {
 dropArea.addEventListener(eventName, () =>
 dropArea.classList.remove('highlight'), false);
-});
-dropArea.addEventListener('drop', (e) => {
-const dt = e.dataTransfer;
-const files = dt.files;
-handleFiles(files);
+});dropArea.addEventListener('drop', (e) => {
+handleFiles(e.dataTransfer.files);
 }, false);
 function preventDefaults(e) {
 e.preventDefault();
 e.stopPropagation();
 } /
-/ Event Listener for removing a file from the listfileListContainer.addEventListener('click', (e) => {
-if (e.target.classList.contains('file-remove')) {
-const index = parseInt(e.target.getAttribute('data-index'));
-selectedFiles.splice(index, 1); // Remove file from the array
-renderFileList(); // Re-render the list
+/ 4. Remove File Button
+fileListContainer.addEventListener('click', (e) => {
+if (e.target.closest('.file-remove')) {
+const index =
+parseInt(e.target.closest('.file-remove').getAttribute('data-index'));
+selectedFiles.splice(index, 1);
+renderFileList();
+displayStatus('File removed.', 'info');
 }
 });
-// Event Listener for the Convert Button
-convertBtn.addEventListener('click', () => {
+// 5. Clear All Button
+clearBtn.addEventListener('click', clearAllFiles);
+// 6. Convert Button
+convertBtn.addEventListener('click', async () => {
 if (selectedFiles.length === 0) return;
-const selectedFormat = formatSelect.value;
-const filesToConvert = selectedFiles.map(file =>
-file.name).join(', ');
-// --- IMPORTANT: FRONT-END LIMITATION MESSAGE ---
-// This is the place where you would send the files to a
-server-side script
-// or an external API for the actual conversion.
-// Display a placeholder message to the user
-statusMessage.textContent = `Conversion simulated! Files:
-${filesToConvert}.
-Format selected: ${selectedFormat}. You need a server-side
-script (e.g., Node.js, Python, PHP)
-to perform the actual file conversion to PDF.`;
-statusMessage.className = 'status-message success'; // Use success
-style for the message
-statusMessage.style.display = 'block';
-// In a real application, you would handle the server response
-here
-// and then clear the files or provide a download link.
-// Example: Clear files after simulated conversion
-// setTimeout(() => {
-// selectedFiles = [];
-// renderFileList();
-// }, 5000);
+displayStatus('Processing files... Please wait.', 'info');
+convertBtn.disabled = true;
+convertBtn.textContent = 'Converting...';
+const formData = new FormData();
+selectedFiles.forEach(file => {
+formData.append('files[]', file); // Use 'files[]' for
+multi-file upload
 });
-// Initial rendering call
+try {
+// --- Core Fetch API for Backend Communication ---
+const response = await fetch(API_ENDPOINT, {
+method: 'POST',
+body: formData,
+// Headers like 'Content-Type' are automatically set by
+the browser
+// when using FormData, so we omit them.
+});
+const result = await response.json(); // Assuming the backendreturns JSON
+if (response.ok && result.success) {
+displayStatus(`Success! Converted ${result.fileCount}
+files. Starting download...`, 'success');
+// --- Simulate Download or provide a link ---
+// In a real app, you would redirect to a download link
+provided by the backend (result.downloadUrl)
+console.log("Download link (simulated):",
+result.downloadUrl);
+// Clear files after successful conversion
+setTimeout(() => {
+clearAllFiles();
+displayStatus('Conversion complete. Ready for new
+files.', 'info');
+}, 3000);
+} else {
+// Handle server-side errors (e.g., file conversion
+failed)
+const errorMessage = result.message || `Conversion failed:
+Server status ${response.status}.`;
+displayStatus(errorMessage, 'error');
+}
+} catch (error) {
+// Handle network or other errors (e.g., API_ENDPOINT not
+found)
+console.error('Conversion Error:', error);
+displayStatus(`An unexpected error occurred. Please check the
+backend setup.`, 'error');
+} finally {
+// Reset button state
+updateButtonsState();
+}
+});
+// Initial state setup
 renderFileList();
