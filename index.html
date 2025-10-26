@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,
+initial-scale=1.0">
+<title>File Converter Tool - Convert to PDF</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+<h1>Universal File Converter</h1>
+<p>Your simple tool to convert images and documents to
+PDF.</p>
+</header>
+<main>
+<div class="converter-box">
+<h2>Convert to PDF</h2>
+<div class="conversion-type">
+<label for="format-select">Select Your Conversion
+Type:</label>
+<select id="format-select">
+<option value="auto">Auto-Detect Format</option>
+<option value="png">PNG to PDF</option>
+<option value="jpg">JPG/JPEG to PDF</option>
+<option value="doc">DOC/DOCX to PDF</option>
+</select>
+</div>
+<div id="drop-area" class="upload-area">
+<input type="file" id="file-input" accept=".png, .jpg,
+.jpeg, .doc, .docx" multiple hidden><p>Drag & Drop your files here, or <span
+id="file-select-btn">Click to Browse</span></p>
+<small>Supported formats: .png, .jpg, .jpeg, .doc,
+.docx</small>
+</div>
+<div id="file-list" class="file-list">
+</div>
+<button id="convert-btn" disabled>Convert Now</button>
+<div id="status-message" class="status-message"></div>
+</div>
+</main>
+<footer>
+<p>© 2025 File Converter Tool</p>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

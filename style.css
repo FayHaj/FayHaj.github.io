@@ -1,0 +1,199 @@
+:root {
+--primary-color: #007BFF;
+--secondary-color: #6C757D;
+--background-color: #F8F9FA;
+--card-background: #FFFFFF;
+--border-color: #DEE2E6;
+--success-color: #28A745;
+} b
+ody {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+margin: 0;
+padding: 0;
+background-color: var(--background-color);
+color: #343A40;
+line-height: 1.6;
+display: flex;
+flex-direction: column;
+min-height: 100vh;} h
+eader {
+background-color: var(--primary-color);
+color: white;
+padding: 30px 20px;
+text-align: center;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+} h
+eader h1 {
+margin: 0 0 5px;
+font-size: 2.5em;
+} h
+eader p {
+margin: 0;
+font-size: 1.1em;
+} m
+ain {
+flex: 1;
+padding: 40px 20px;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+} .
+converter-box {
+background-color: var(--card-background);
+padding: 40px;
+border-radius: 12px;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+width: 100%;
+max-width: 600px;
+text-align: center;
+} .
+converter-box h2 {
+color: var(--primary-color);
+margin-top: 0;
+border-bottom: 2px solid var(--border-color);
+padding-bottom: 15px;
+margin-bottom: 30px;
+} /
+* Conversion Type Select */
+.conversion-type {margin-bottom: 25px;
+text-align: left;
+} .
+conversion-type label {
+display: block;
+margin-bottom: 8px;
+font-weight: bold;
+} #
+format-select {
+width: 100%;
+padding: 10px;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+font-size: 1em;
+-webkit-appearance: none; /* Remove default browser styling */
+-moz-appearance: none;
+appearance: none;
+background: url("data:image/svg+xml;charset=UTF-8,%3Csvg
+xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'
+fill='%236C757D'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E")
+no-repeat right 10px center;
+background-size: 12px;
+cursor: pointer;
+} /
+* File Upload Area */
+.upload-area {
+border: 3px dashed var(--border-color);
+padding: 50px 20px;
+border-radius: 10px;
+cursor: pointer;
+transition: border-color 0.3s ease, background-color 0.3s ease;
+margin-bottom: 20px;
+} .
+upload-area:hover,
+.upload-area.highlight {
+border-color: var(--primary-color);
+background-color: #E9ECEF;
+} .
+upload-area p {
+font-size: 1.2em;
+color: var(--secondary-color);
+margin-bottom: 5px;} #
+file-select-btn {
+color: var(--primary-color);
+font-weight: bold;
+cursor: pointer;
+text-decoration: underline;
+} .
+upload-area small {
+display: block;
+color: #ADB5BD;
+margin-top: 5px;
+} /
+* File List */
+.file-list {
+text-align: left;
+margin-bottom: 20px;
+max-height: 150px;
+overflow-y: auto;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+} .
+file-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 15px;
+border-bottom: 1px solid var(--border-color);
+background-color: #FAFAFA;
+} .
+file-item:last-child {
+border-bottom: none;
+} .
+file-name {
+flex-grow: 1;
+overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;
+font-size: 0.95em;
+} .
+file-remove {
+cursor: pointer;color: #DC3545;
+font-weight: bold;
+margin-left: 10px;
+} /
+* Convert Button */
+#convert-btn {
+background-color: var(--primary-color);
+color: white;
+border: none;
+padding: 12px 30px;
+font-size: 1.1em;
+border-radius: 8px;
+cursor: pointer;
+transition: background-color 0.3s, opacity 0.3s;
+width: 100%;
+} #
+convert-btn:hover:not([disabled]) {
+background-color: #0056b3;
+} #
+convert-btn:disabled {
+background-color: var(--secondary-color);
+opacity: 0.6;
+cursor: not-allowed;
+} /
+* Status Message */
+.status-message {
+margin-top: 20px;
+padding: 15px;
+border-radius: 8px;
+background-color: #FFF3CD; /* Warning color by default */
+color: #856404;
+border: 1px solid #FFEEBA;
+text-align: left;
+font-size: 0.9em;
+display: none; /* Initially hidden */
+} .
+status-message.success {
+background-color: #D4EDDA;
+color: var(--success-color);
+border-color: #C3E6CB;
+}/* Footer */
+footer {
+background-color: #343A40;
+color: white;
+text-align: center;
+padding: 15px 0;
+font-size: 0.9em;
+} /
+* Responsive Design */
+@media (max-width: 650px) {
+header {
+padding: 20px 10px;
+} .
+converter-box {
+padding: 25px;
+margin: 0 10px;
+} m
+ain {
+padding: 20px 10px;
+}
+}
